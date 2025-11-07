@@ -35,25 +35,28 @@ module.exports = {
       ],
     }),
     new InjectManifest({
-      swSrc: './src/service-worker.js',
+      swSrc: './public/service-worker.js',
       swDest: 'service-worker.js',
     }),
   ],
-devServer: {
-  static: {
-    directory: path.join(__dirname, 'dist'),
-  },
-  compress: true,
-  port: 8080,
-  open: true,
-  historyApiFallback: true,
 
-  proxy: {
-      '/v1': {
-      target: 'https://story-api.dicoding.dev',
-      changeOrigin: true,
-      secure: true,
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist'),
     },
-},
-},
+    compress: true,
+    port: 8080,
+    open: true,
+    historyApiFallback: true,
+
+    // ✅ gunakan array, bukan object langsung
+    proxy: [
+      {
+        context: ['/v1'],
+        target: 'https://story-api.dicoding.dev',
+        changeOrigin: true,
+        secure: true,
+      },
+    ],
+  },
 };
