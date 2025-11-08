@@ -1,17 +1,21 @@
   import { openDB } from 'idb';
 
   const DB_NAME = 'storymap-db';
-  const DB_VERSION = 1;
+  const DB_VERSION = 2;
   const CACHE_OBJECT_STORE = 'stories-cache';
   const FAVORITE_OBJECT_STORE = 'favorite-stories';
+  const PENDING_STORIES_OBJECT_STORE = 'pending-stories';
 
   const dbPromise = openDB(DB_NAME, DB_VERSION, {
-    upgrade(db) {
+    upgrade(db, oldVersion, newVersion, transaction) {
       if (!db.objectStoreNames.contains(CACHE_OBJECT_STORE)) {
         db.createObjectStore(CACHE_OBJECT_STORE, { keyPath: 'id' });
       }
       if (!db.objectStoreNames.contains(FAVORITE_OBJECT_STORE)) {
         db.createObjectStore(FAVORITE_OBJECT_STORE, { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains(PENDING_STORIES_OBJECT_STORE)) {
+        db.createObjectStore(PENDING_STORIES_OBJECT_STORE, { keyPath: 'id', autoIncrement: true });
       }
     },
   });
@@ -43,6 +47,20 @@
     async deleteFavoriteStory(id) {
       if (!id) return;
       return (await dbPromise).delete(FAVORITE_OBJECT_STORE, id);
+    },
+
+    async addPendingStory(storyData) {
+      if (!storyData) return;
+      return (await dbPromise).add(PENDING_STORIES_OBJECT_STORE, { ...storyData, timestamp: Date.now() });
+    },
+
+    async getAllPendingStories() {
+      return (await dbPromise).getAll(PENDING_STORIES_OBJECT_STORE);
+    },
+
+    async deletePendingStory(id) {
+      if (!id) return;
+      return (await dbPromise).delete(PENDING_STORIES_OBJECT_STORE, id);
     },
   };
 

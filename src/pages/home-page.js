@@ -24,28 +24,26 @@
       listEl.innerHTML = '';
       listEl.appendChild(loading);
 
-      try {
-
-        const res = await fetchStories({ page: 1, size: 50 });
-        const stories = res.listStory || [];
-
-
-        await DBHelper.putAllStories(stories);
-
-
+      // Always try to load from cache first for offline support
+      let stories = await DBHelper.getAllStories();
+      if (stories.length > 0) {
         this.renderStoryList(stories);
         this.initMap(stories);
+      }
+
+      try {
+        const res = await fetchStories({ page: 1, size: 50 });
+        const onlineStories = res.listStory || [];
+
+        await DBHelper.putAllStories(onlineStories);
+
+        // Update display with fresh data
+        this.renderStoryList(onlineStories);
+        this.initMap(onlineStories);
       } catch (err) {
-
-        console.error('Gagal fetch online, ambil dari cache:', err);
-        listEl.innerHTML = `<p>Gagal memuat data online. Menampilkan data dari cache...</p>`;
-
-        const stories = await DBHelper.getAllStories();
-        if (stories.length > 0) {
-          this.renderStoryList(stories);
-          this.initMap(stories);
-        } else {
-          listEl.innerHTML = `<p>Error: ${err.message}. Tidak ada data offline tersedia.</p>`;
+        console.error('Gagal fetch online, menggunakan data cache:', err);
+        if (stories.length === 0) {
+          listEl.innerHTML = `<p>Gagal memuat data online. Tidak ada data offline tersedia.</p>`;
         }
       } finally {
         if (listEl.contains(loading)) {

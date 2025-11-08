@@ -1,3 +1,3 @@
 Name: Sopyan Dermawan
-Deployment URL: https://luminous-donut-1f6b8c.netlify.app/
+Deployment URL: https://heroic-quokka-ca17f4.netlify.app/
 Platform: GitHub Pages

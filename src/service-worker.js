@@ -80,7 +80,7 @@ self.addEventListener('push', (event) => {
 
   if (event.data) {
     try {
- 
+
       const dataAsJson = event.data.json();
       notificationData.title = dataAsJson.title || notificationData.title;
       notificationData.options.body = dataAsJson.body || notificationData.options.body;

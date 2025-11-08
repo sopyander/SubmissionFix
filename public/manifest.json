@@ -6,18 +6,65 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1976d2",
+  "categories": ["lifestyle", "social", "maps"],
+  "lang": "id-ID",
+  "dir": "ltr",
+  "orientation": "portrait-primary",
+  "scope": "/",
   "icons": [
     {
       "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/home.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Halaman utama dengan peta dan daftar cerita"
+    },
+    {
+      "src": "/screenshots/add-story.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Formulir tambah cerita baru"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Tambah Cerita",
+      "short_name": "Tambah",
+      "description": "Buat cerita baru dengan lokasi",
+      "url": "/#/add-story",
+      "icons": [
+        {
+          "src": "/icons/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Cerita Favorit",
+      "short_name": "Favorit",
+      "description": "Lihat cerita favorit Anda",
+      "url": "/#/favorite",
+      "icons": [
+        {
+          "src": "/icons/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }

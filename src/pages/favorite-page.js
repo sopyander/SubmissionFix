@@ -17,13 +17,13 @@ export default class FavoritePage {
     const listEl = document.getElementById('favorite-list');
     try {
         const stories = await DBHelper.getAllFavoriteStories();
-        
+
         listEl.innerHTML = '';
         if (stories.length === 0) {
           listEl.innerHTML = '<p>Anda belum memiliki cerita favorit. Tambahkan cerita ke favorit dengan menekan tombol hati ❤️.</p>';
           return;
         }
-    
+
         stories.forEach(story => {
           const item = document.createElement('story-item');
           item.data = story;
@@ -31,6 +31,8 @@ export default class FavoritePage {
         });
     } catch(err) {
         listEl.innerHTML = `<p>Gagal memuat cerita favorit: ${err.message}</p>`;
+        // Fallback: tampilkan pesan offline
+        listEl.innerHTML = '<p>Cerita favorit tersimpan secara offline. Pastikan Anda telah menandai cerita sebagai favorit saat online.</p>';
     }
   }
 }

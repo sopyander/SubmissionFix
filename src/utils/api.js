@@ -4,9 +4,10 @@ function getToken() {
   return localStorage.getItem('story_token') || null;
 }
 
-export async function request(url, options = {}) {
+async function request(url, options = {}) {
   const token = getToken();
   const headers = options.headers || {};
+
   if (!(options.body instanceof FormData)) {
     headers['Content-Type'] = headers['Content-Type'] || 'application/json';
   }
@@ -36,6 +37,7 @@ export async function register(name, email, password) {
     body: JSON.stringify({ name, email, password })
   });
 }
+
 
 export async function fetchStories({ page = 1, size = 20, location = 0 } = {}) {
   const url = new URL(`${CONFIG.BASE_URL}/stories`);
@@ -69,4 +71,23 @@ export async function addStory({ description, photoFile, lat, lon }) {
 
 export async function getStoryDetail(id) {
   return request(`${CONFIG.BASE_URL}/stories/${id}`);
+}
+
+export async function subscribeNotification({ endpoint, keys }) {
+  const payload = {
+    endpoint,
+    keys,
+  };
+
+  return request(`${CONFIG.BASE_URL}/notifications/subscribe`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function unsubscribeNotification(endpoint) {
+  return request(`${CONFIG.BASE_URL}/notifications/subscribe`, {
+    method: 'DELETE',
+    body: JSON.stringify({ endpoint }),
+  });
 }

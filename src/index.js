@@ -2,10 +2,11 @@ import './styles/styles.css';
 import App from './app.js';
 
 const registerServiceWorker = () => {
-  if ('serviceWorker' in navigator) {
+  // Skip service worker registration in development (localhost)
+  if ('serviceWorker' in navigator && location.hostname !== 'localhost') {
     window.addEventListener('load', () => {
       navigator.serviceWorker
-        .register('/service-worker.js') 
+        .register('/service-worker.js')
         .then(registration => {
           console.log('Service Worker registered: ', registration);
         })
@@ -13,6 +14,8 @@ const registerServiceWorker = () => {
           console.log('Service Worker registration failed: ', registrationError);
         });
     });
+  } else {
+    console.log('Service Worker skipped in development mode');
   }
 };
 

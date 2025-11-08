@@ -1,4 +1,5 @@
 import { addStory } from '../utils/api.js';
+import DBHelper from '../utils/db-helper.js';
 import 'leaflet/dist/leaflet.js';
 import 'leaflet/dist/leaflet.css';
 
@@ -94,8 +95,22 @@ export default class AddStoryPage {
           alert('Gagal mengirim cerita: ' + res.message);
         }
       } catch (err) {
-        console.error(err);
-        alert('Terjadi error saat mengirim: ' + err.message);
+        console.error('Online upload failed:', err);
+        // Save to pending stories for offline sync
+        try {
+          const storyData = {
+            description,
+            photoFile: photo,
+            lat: lat || null,
+            lon: lon || null
+          };
+          await DBHelper.addPendingStory(storyData);
+          alert('Koneksi offline. Cerita disimpan dan akan diupload saat online.');
+          location.hash = '/';
+        } catch (dbErr) {
+          console.error('Failed to save offline:', dbErr);
+          alert('Gagal menyimpan cerita offline: ' + dbErr.message);
+        }
       } finally {
         if (loading.parentNode) loading.parentNode.removeChild(loading);
       }
