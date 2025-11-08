@@ -98,9 +98,11 @@ export default class AddStoryPage {
         console.error('Online upload failed:', err);
         // Save to pending stories for offline sync
         try {
+          // Convert photo to blob for IndexedDB storage
+          const photoBlob = photo instanceof Blob ? photo : new Blob([photo], { type: photo.type });
           const storyData = {
             description,
-            photoFile: photo,
+            photoFile: photoBlob,
             lat: lat || null,
             lon: lon || null
           };

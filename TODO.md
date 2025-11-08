@@ -11,8 +11,8 @@
 - [x] Update api.js to handle offline queue
 
 ## 3. Handle Redundant Service Worker on Deployment
-- [x] Remove public/service-worker.js since src/service-worker.js is used
-- [x] Update webpack config to handle service worker properly
+- [x] Move service-worker.js to public/ folder to avoid webpack generating duplicate
+- [x] Remove InjectManifest from webpack config
 - [x] Ensure only one service worker is registered
 
 ## 4. Testing and Verification

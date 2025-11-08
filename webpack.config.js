@@ -34,10 +34,8 @@ module.exports = {
         },
       ],
     }),
-    new InjectManifest({
-      swSrc: './src/service-worker.js',
-      swDest: 'service-worker.js',
-    }),
+    // Remove InjectManifest to avoid duplicate service workers
+    // Service worker is now in public/ and copied by CopyWebpackPlugin
   ],
 
   devServer: {
